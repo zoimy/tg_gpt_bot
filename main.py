@@ -5,16 +5,20 @@ from aiogram.filters import Command
 from aiogram.types import Message
 from aiogram.methods import DeleteWebhook
 import time
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 from mistralai import Mistral
 import keys
-api_key = keys.key_mitral
+api_key = os.getenv("KEY_MITRAL")
+tgBot = os.getenv("KEY_TGBOT")
 model="mistral-small-latest"
 
 client=Mistral(api_key=api_key)
 
 logging.basicConfig(level=logging.INFO)
-bot=Bot(token=keys.key_tgBot)
+bot=Bot(token=tgBot)
 dp = Dispatcher()
 
 @dp.message(Command("start"))
@@ -35,7 +39,7 @@ async def start(message: Message):
                 }
             ]
         )
-        channel_id = keys.id_channelTg
+        channel_id = os.getenv("ID_CHANNELTG")
         await bot.send_message(channel_id, chat_response.choices[0].message.content, parse_mode="Markdown")
 
         time.sleep(21600)
